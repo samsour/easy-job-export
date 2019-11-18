@@ -1,5 +1,5 @@
 <template>
-  <div @mousedown="$refs.searchInput.focus()" :class="{'is-active': isActive}" class="search-input">
+  <div @click="$refs.searchInput.focus()" :class="{'is-active': isActive}" class="search-input">
     <div class="search-input__content">
       <span class="search-input__title">{{ field }}</span>
       <input :value="value" @focus="$emit('searching', true)" @blur="$emit('searching', false)" ref="searchInput" @input="$emit('input', $event.target.value)" type="search" required class="search-input__input" />
