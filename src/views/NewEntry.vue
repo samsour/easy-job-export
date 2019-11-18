@@ -1,7 +1,7 @@
 <template>
   <div class="new-entry">
     <!-- TODO Refactor add right filter data -->
-    <search v-for="(field, index) in visibleFields" :key="index" :field="field.name" :filterData="field.data" @itemSelect="setEntry" @changeSearchState="setSearchState" :isActive="field == activeSearch" />
+    <search v-for="(field, index) in visibleFields" :key="index" :field="field.name" :filterData="field.data" @itemSelect="setEntry" @changeSearchState="setSearchState" :isActive="field.name == activeSearch" />
 
     <!-- <search :field="'project'" :filterData="projects" @itemSelect="setEntry" @changeSearchState="setSearchState" />
     <search :field="'task'" :filterData="tasks" @itemSelect="setEntry" @changeSearchState="setSearchState" /> -->
