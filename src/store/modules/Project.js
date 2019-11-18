@@ -9,12 +9,12 @@ export default {
         name: "Metal Homepage",
         tasks: [
           {
-            id: "732hd9d8",
+            id: "7c32hd9d8",
             exportValue: 76177,
             name: "Designer"
           },
           {
-            id: "fn38qwd9034",
+            id: "fn38qwdvv9034",
             exportValue: 12345,
             name: "Entwickler"
           }
@@ -27,12 +27,12 @@ export default {
         name: "echt langes Projekt",
         tasks: [
           {
-            id: "732h5etf9d8",
+            id: "732h5eqtf9d8",
             exportValue: 11112,
             name: "echt langer Task mit ganz vielen Buchstaben"
           },
           {
-            id: "ffffewfdf",
+            id: "ffffewfvdf",
             exportValue: 25252,
             name: "kurzer Task"
           },
@@ -50,7 +50,7 @@ export default {
         name: "Ausbildung",
         tasks: [
           {
-            id: "73btgsfe8",
+            id: "73btbfsfe8",
             exportValue: 73452,
             name: "Berufsschule"
           },
@@ -68,12 +68,12 @@ export default {
         name: "Relaunch Bad Website",
         tasks: [
           {
-            id: "73btgsfe8",
+            id: "73btgstzjtfe8",
             exportValue: 73452,
             name: "Senior Developer"
           },
           {
-            id: "45gfdewf",
+            id: "45gfdeashwf",
             exportValue: 90707,
             name: "Junior Developer"
           }
@@ -83,13 +83,15 @@ export default {
   },
   getters: {
     projects: state => state.projects,
+    customerProjects: state => customerId => state.projects.filter(project => project.customer == customerId),
     tasks: state => {
       const tasks = [];
       for (const project of state.projects) {
         tasks.push(...project.tasks);
       }
       return tasks;
-    }
+    },
+    projectTasks: state => projectId => state.projects.find(project => project.id == projectId).tasks
   },
   mutations: {
     ADD_PROJECT(state, name) {

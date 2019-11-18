@@ -1,11 +1,16 @@
 <template>
   <div class="new-entry">
-    <!-- TODO Refactor add right filter data -->
-    <search v-for="(field, index) in visibleFields" :key="index" :field="field.name" :filterData="field.data" @itemSelect="setEntry" @changeSearchState="setSearchState" :isActive="field.name == activeSearch" />
-
-    <!-- <search :field="'project'" :filterData="projects" @itemSelect="setEntry" @changeSearchState="setSearchState" />
-    <search :field="'task'" :filterData="tasks" @itemSelect="setEntry" @changeSearchState="setSearchState" /> -->
-
+    <search
+      v-for="(field, index) in visibleFields"
+      :key="index"
+      :field="field.name"
+      :filterData="field.data"
+      @changeSearchState="setSearchState"
+      :isActive="field.name == activeSearch"
+      :autoFill="field.autoFill ? field.autoFill : null"
+      @autoFill="autoFill"
+      v-model="entry[field.name]"
+    />
     <button @click="transform(entry)" class="new-entry__button">Export to csv</button>
   </div>
 </template>
@@ -23,10 +28,22 @@ export default {
   computed: {
     ...mapGetters({
       userId: "user/exportValue",
-      customers: "customer/customers",
-      projects: "project/projects",
-      tasks: "project/tasks"
+      customers: "customer/customers"
     }),
+    filteredProjects() {
+      if (this.entry["customer"]) {
+        return this.$store.getters["project/customerProjects"](this.entry["customer"].id);
+      } else {
+        return this.$store.getters["project/projects"];
+      }
+    },
+    filteredTasks() {
+      if (this.entry["project"]) {
+        return this.$store.getters["project/projectTasks"](this.entry["project"].id);
+      } else {
+        return  this.$store.getters["project/tasks"]
+      }
+    },
     fields() {
       return [
         {
@@ -41,11 +58,13 @@ export default {
         },
         {
           name: "project",
-          data: this.projects
+          data: this.filteredProjects,
+          autoFill: "customer"
         },
         {
           name: "task",
-          data: this.tasks
+          data: this.filteredTasks,
+          autoFill: "project"
         },
       ];
     },
@@ -61,30 +80,39 @@ export default {
     };
   },
   methods: {
-    transform(obj) {
-      const opts = { fields: this.fields, quote: "", delimiter: "|" };
+    transform() {
+      const fieldNames = this.fields.filter(field => field.export !== false).map(field => field.name);
+      const options = { fields: fieldNames, quote: "", delimiter: "|" };
 
-      // add missing properties
-      const entry = obj;
-      entry["resId"] = this.resId;
+      // todo refactor
+      this.entry["resId"] = { exportValue: this.userId };
+      const exportEntry = {};
+
+      for (const fieldName of fieldNames) {
+        exportEntry[fieldName] = this.entry[fieldName].exportValue;
+      }
 
       try {
-        const parser = new Parser(opts);
-        const result = parser.parse(entry);
+        const parser = new Parser(options);
+        const result = parser.parse(exportEntry);
         console.log(result);
         return result;
       } catch (error) {
         console.error(error);
       }
     },
-    setEntry({ field, item }) {
-      this.entry[field] = item.exportValue;
-    },
     setSearchState({ field, state }) {
       if (this.activeSearch != field || this.activeSearch == field && state == true) {
         this.activeSearch = field;
       } else {
         this.activeSearch = null;
+      }
+    },
+    autoFill({ autoFill, item }) {
+      // get full history of object
+      //console.log("get full history of", autoFill, "by", item);
+      if (!this.entry[autoFill]) {
+        //console.log("previous is not set");
       }
     }
   }

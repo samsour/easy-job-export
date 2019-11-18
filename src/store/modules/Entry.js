@@ -2,17 +2,17 @@ export default {
   namespaced: true,
   state: {
     name: "",
-    resId: 0,
+    userId: 0,
   },
   getters: {
-    resId: state => state.resId,
+    userId: state => state.userId,
     name: state => state.name,
   },
   mutations: {
     SET_USER_NAME(state, name) {
       state.name = name;
     },
-    SET_RES_ID(state, id) {
+    SET_USER_ID(state, id) {
       state.resId = id;
     }
   },
@@ -20,7 +20,7 @@ export default {
     setName({ commit, state }, name) {
       commit("SET_USER_NAME", name);
     },
-    setResId({ commit, state }, id) {
+    SET_USER_ID({ commit, state }, id) {
       commit("SET_RES_ID", id);
     },
   }

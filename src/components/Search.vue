@@ -18,7 +18,8 @@ export default {
     props: {
         field: String,
         filterData: Array,
-        isActive: Boolean
+        isActive: Boolean,
+        autoFill: String
     },
     data() {
         return {
@@ -29,7 +30,11 @@ export default {
         selectItem(item) {
             this.searchText = item.name;
             this.changeSearchState(false);
-            this.$emit('itemSelect', { field: this.field, item: item });
+            this.$emit('input', item);
+            if ( this.autoFill !== null) {
+                console.log(this.autoFill);
+                this.$emit('autoFill', { autoFill: this.autoFill, item: item });
+            }
         },
         changeSearchState(state) {
             this.$emit('changeSearchState', { state: state, field: this.field });
