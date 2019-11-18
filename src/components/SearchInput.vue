@@ -1,8 +1,8 @@
 <template>
-  <div @click="toggle" :class="{'is-active': isActive}" class="search-input">
+  <div @mousedown="$refs.searchInput.focus()" :class="{'is-active': isActive}" class="search-input">
     <div class="search-input__content">
       <span class="search-input__title">{{ field }}</span>
-      <input :value="value" @focus="$emit('searching', true)" ref="searchInput" @input="$emit('input', $event.target.value)" type="search" required class="search-input__input" />
+      <input :value="value" @focus="$emit('searching', true)" @blur="$emit('searching', false)" ref="searchInput" @input="$emit('input', $event.target.value)" type="search" required class="search-input__input" />
     </div>
   </div>
 </template>
@@ -14,14 +14,6 @@ export default {
     field: String,
     value: String,
     isActive: Boolean
-  },
-  methods: {
-    toggle() {
-      this.$emit('searching', true);
-      if (!this.isActive) {
-        this.$refs.searchInput.focus();
-      }
-    }
   }
 };
 </script>
@@ -69,6 +61,8 @@ export default {
     transform: translateX(-50%);
     font-size: 28px;
     transition: all .2s ease;
+    cursor: text;
+    pointer-events: none;
 
     #{$root}.is-active &, &:invalid{
       font-size: 16px;
