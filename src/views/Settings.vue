@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "new",
+  name: "settings",
   computed: {
     name: {
       get() {

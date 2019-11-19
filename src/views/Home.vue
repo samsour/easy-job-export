@@ -7,6 +7,9 @@
     <router-link tag="button" to="/settings">
       Einstellungen
     </router-link>
+    <router-link tag="button" to="/manage">
+      Daten bearbeiten
+    </router-link>
   </div>
 </template>
 

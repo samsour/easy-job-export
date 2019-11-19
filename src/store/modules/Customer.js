@@ -1,31 +1,11 @@
 export default {
   namespaced: true,
   state: {
-    customers: [
-      {
-        id: "f0923f0",
-        name: "Schwermetallica",
-        icon: ""
-      },
-      {
-        id: "d09r3f0",
-        name: "Kunde Echt ein Langernameundlangeswort GmbH",
-        icon: ""
-      },
-      {
-        id: "xc0223f0",
-        name: "ArenaNet",
-        icon: ""
-      },
-      {
-        id: "jjwer31r",
-        name: "Awesome Cosmetics Ltd",
-        icon: ""
-      }
-    ]
+    customers: []
   },
   getters: {
     customers: state => state.customers,
+    customerById: state => id => state.customers.find(customer => customer.id == id)
   },
   mutations: {
     ADD_CUSTOMER(state, data) {
@@ -36,5 +16,8 @@ export default {
     add({ commit, state }, data) {
       commit("ADD_CUSTOMER", data);
     },
+    set({ commit, state }, { id, data }) {
+      console.log(state.getters);
+    }
   }
 };

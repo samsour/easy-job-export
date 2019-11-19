@@ -35,6 +35,15 @@ const router = new Router({
       path: "/settings",
       name: "Settings",
       component: () => import("./views/Settings")
+    },
+    {
+      path: "/manage",
+      name: "Manage",
+      component: () => import("./views/Manage")
+    },
+    {
+      path: "/customer/:id",
+      component: () => import("./views/Customer")
     }
   ]
 });

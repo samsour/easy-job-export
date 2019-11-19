@@ -1,0 +1,74 @@
+<template>
+  <div class="customer">
+    <div class="customer__head">
+      <div class="customer__image-container">
+        <img v-if="customer.image" :src="customer.image" class="customer__image">
+        <div v-else class="customer__no-image"></div>
+      </div>
+      <h2 class="customer__name">{{ customer.name }}</h2>
+    </div>
+    <ul v-if="projects.length > 0" class="customer__task-list">
+      <li v-for="project in projects" :key="project.id" class="customer-task-item">
+        <span>{{ project.name }} </span><span>({{ project.exportValue }})</span>
+      </li>
+    </ul>
+    <span v-else>Keine Projekte</span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "manage",
+  computed: {
+    customer() {
+      return this.$store.getters["customer/customerById"](this.$route.params.id);
+    },
+    projects() {
+      return this.$store.getters["project/customerProjects"](this.customer.id);
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+.customer {
+  &__head {
+    display: flex;
+  }
+  &__image-container {
+    width: 150px;
+    height: 150px;
+    margin-right: 20px;
+    position: relative;
+    cursor: pointer;
+  
+    &:hover {
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(27,27,27,0.5);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+  }
+
+  &__image, &__no-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__no-image {
+    background: #bbbbbb;
+  }
+}
+</style>
