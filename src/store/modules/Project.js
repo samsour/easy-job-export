@@ -95,7 +95,7 @@ export default {
   },
   mutations: {
     ADD_PROJECT(state, name) {
-      state.customers.push(name);
+      state.projects.push(name);
     },
     ADD_TASK(state, task) {
       const index = state.projects.findIndex((project => project.id == task.projectId));

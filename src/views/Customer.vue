@@ -7,12 +7,26 @@
       </div>
       <h2 class="customer__name">{{ customer.name }}</h2>
     </div>
+
     <ul v-if="projects.length > 0" class="customer__task-list">
       <li v-for="project in projects" :key="project.id" class="customer-task-item">
         <span>{{ project.name }} </span><span>({{ project.exportValue }})</span>
       </li>
     </ul>
     <span v-else>Keine Projekte</span>
+
+    <button @click="newProject = {}">Neues Projekt</button>
+    <section v-if="newProject !== null" class="customer__new-project">
+      <label>
+        Name
+        <input v-model="newProject.name" />
+      </label>
+      <label>
+        Export Value:
+        <input v-model="newProject.exportValue" />
+      </label>
+      <button @click="addNewProject">Projekt hinzufügen</button>
+    </section>
   </div>
 </template>
 
@@ -25,6 +39,26 @@ export default {
     },
     projects() {
       return this.$store.getters["project/customerProjects"](this.customer.id);
+    }
+  },
+  data() {
+    return {
+      newProject: null
+    }
+  },
+  methods: {
+    generateId() {
+      return "qwer";
+    },
+    addNewProject() {
+      this.$store.dispatch("project/addProject", {
+        id: this.generateId(),
+        customer: this.customer.id,
+        exportValue: this.newProject.exportValue,
+        name: this.newProject.name,
+        tasks: []
+      })
+      this.newProject = null;
     }
   }
 };
