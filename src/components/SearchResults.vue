@@ -3,8 +3,8 @@
     <ul v-if="filterData && filteredArray.length > 0" class="search-results__list">
       <li v-for="(item, index) in filteredArray" :key="index" @click="$emit('itemSelect', item)" class="search-results__list-item">
         <figure class="search-results__result">
-          <div class="search-results__image-wrapper">
-            <img v-if="item.image" :src="item.image" class="search-results__result-image">
+          <div v-if="item.image" class="search-results__image-wrapper">
+            <img :src="item.image" class="search-results__result-image">
           </div>
           <figcaption class="search-results__result-title">{{ item.name }}</figcaption>
         </figure>
