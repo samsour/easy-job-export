@@ -2,7 +2,12 @@
   <label class="search-results">
     <ul v-if="filterData && filteredArray.length > 0" class="search-results__list">
       <li v-for="(item, index) in filteredArray" :key="index" @click="$emit('itemSelect', item)" class="search-results__list-item">
-        <h4 class="search-results__result-title">{{ item.name }}</h4>
+        <figure class="search-results__result">
+          <div class="search-results__image-wrapper">
+            <img v-if="item.image" :src="item.image" class="search-results__result-image">
+          </div>
+          <figcaption class="search-results__result-title">{{ item.name }}</figcaption>
+        </figure>
       </li>
     </ul>
     <span v-else>{{ noResultMessage }}</span>
@@ -41,13 +46,29 @@ export default {
     }
   
     &__list-item {
-        display: flex;
-        padding: 10px;
         cursor: pointer;
 
         &:hover {
             background: #f7f7f7;
         }
+    }
+
+    &__result {
+      display: flex;
+      padding: 10px;
+      align-items: center;
+    }
+
+    &__image-wrapper {
+      width: 60px;
+      height: 60px;
+      margin-right: 20px;
+    }
+
+    &__result-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 }
 </style>
