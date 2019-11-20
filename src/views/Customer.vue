@@ -1,10 +1,11 @@
 <template>
   <div class="customer">
     <div class="customer__head">
-      <div class="customer__image-container">
+      <label class="customer__image-container">
         <img v-if="customer.image" :src="customer.image" class="customer__image">
         <div v-else class="customer__no-image"></div>
-      </div>
+        <input type="file" @change="changeImage" name="customerImage" accept="image/*" class="customer__image-upload">
+      </label>
       <h2 class="customer__name">{{ customer.name }}</h2>
     </div>
 
@@ -48,7 +49,19 @@ export default {
   },
   methods: {
     generateId() {
-      return "qwer";
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    },
+    changeImage(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        this.$store.dispatch("customer/setImage", { id: this.customer.id, imageUrl: reader.result })
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     },
     addNewProject() {
       this.$store.dispatch("project/addProject", {
@@ -103,6 +116,10 @@ export default {
 
   &__no-image {
     background: #bbbbbb;
+  }
+
+  &__image-upload {
+    display: none;
   }
 }
 </style>

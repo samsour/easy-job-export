@@ -1,6 +1,6 @@
 <template>
   <div class="manage">
-    <ul class="manage__customer-list">
+    <ul v-if="customers.length > 0" class="manage__customer-list">
       <router-link tag="li" :to="`customer/${customer.id}`" v-for="customer in customers" :key="customer.id" class="manage__list-item">
         <figure class="manage__customer">
           <div class="manage__image-wrapper">
@@ -11,6 +11,19 @@
         </figure>
       </router-link>
     </ul>
+    <span v-else>Keine Kundendaten vorhanden</span>
+    
+    <button @click="newCustomer = {}">Neuer Kunde</button>
+    <section v-if="newCustomer !== null" class="customer__new-project">
+      <label class="manage__input manage__input--text">
+        Name
+        <input v-model="newCustomer.name" />
+      </label>
+      <label class="manage__input manage__input--image">
+        <input type="file" @change="changeNewCustomerImage" name="customerImage" accept="image/*">
+      </label>
+      <button @click="addNewCustomer">Kunden hinzufügen</button>
+    </section>
   </div>
 </template>
 
@@ -20,6 +33,36 @@ export default {
   computed: {
     customers() {
       return this.$store.getters["customer/customers"];
+    }
+  },
+  data() {
+    return {
+      newCustomer: null
+    }
+  },
+  methods: {
+    generateId() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    },
+    changeNewCustomerImage(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.addEventListener("load", () => {
+        this.newCustomer.image = reader.result;
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    },
+    addNewCustomer() {
+      this.$store.dispatch("customer/add",{
+        id: this.generateId(),
+        name: this.newCustomer.name,
+        image: this.newCustomer.image
+      })
+      this.newCustomer = null;
     }
   }
 };
@@ -63,6 +106,16 @@ export default {
 
   &__customer-name {
     font-weight: bold;
+  }
+
+  &__input {
+    &--text {
+      
+    }
+
+    &--image {
+
+    }
   }
 }
 </style>
