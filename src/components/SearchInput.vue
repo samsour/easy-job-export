@@ -25,11 +25,15 @@ export default {
     position: relative;
     display: flex;
     justify-content: center;
-    padding: 70px 0px;
+    padding: 20px 0px;
     cursor: pointer;
     
     &:hover, &.is-active {
       background: #F7F7F7;
+    }
+
+    &.is-active {
+      padding: 50px 0px 20px;
     }
   
   &__content {
@@ -84,7 +88,6 @@ export default {
 
     &:focus {
       outline: 0;
-
     }
   }
 }

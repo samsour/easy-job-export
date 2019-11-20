@@ -10,7 +10,9 @@
         </figure>
       </li>
     </ul>
-    <span v-else>{{ noResultMessage }}</span>
+    <div v-else class="search-results__message-container">
+      <span class="search-results__message">{{ noResultMessage }}</span>
+    </div>
   </label>
 </template>
 
@@ -69,6 +71,12 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+
+    &__message-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 0;
     }
 }
 </style>
