@@ -11,6 +11,31 @@
       @autoFill="autoFill"
       v-model="entry[field.name]"
     />
+    
+    <div class="new-entry__item">
+      <input v-model="date" type="date" />
+    </div>
+
+    <div class="new-entry__item">
+      <label for="time">Zeit</label>
+      <vue-timepicker
+        v-model="time"
+        name="time"
+        format="H:m"
+        :minute-interval="15"
+        close-on-complete
+        placeholder="Zeit"
+        hour-label="Stunden"
+        minute-label="Minuten"
+        input-class="new-entry__input new-entry__input--time"
+      ></vue-timepicker>
+    </div>
+    
+    <div class="new-entry__item">
+      <textarea v-model="description" />
+    </div>
+
+    <button @click="saveEntry" class="new-entry__button">Speichern</button>
     <button @click="transform(entry)" class="new-entry__button">Export to csv</button>
   </div>
 </template>
@@ -19,11 +44,13 @@
 import { Parser } from "json2csv";
 import { mapGetters } from 'vuex'
 import Search from "@/components/Search";
+import VueTimepicker from 'vue2-timepicker/dist/VueTimepicker.umd.min.js';
 
 export default {
   name: "new",
   components: {
-    Search
+    Search,
+    VueTimepicker
   },
   computed: {
     ...mapGetters({
@@ -76,7 +103,13 @@ export default {
     return {
       // fields: ["resId", "project", "taskId", "date", "description", "time"],
       activeSearch: null,
-      entry: {}
+      entry: {},
+      description: "",
+      date: Date.now(),
+      time: {
+        H: "",
+        m: ""
+      }
     };
   },
   methods: {
@@ -114,15 +147,32 @@ export default {
       if (!this.entry[autoFill]) {
         //console.log("previous is not set");
       }
+    },
+    saveEntry() {
+      console.log("SAVING");
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@import '~vue2-timepicker/dist/VueTimepicker.css';
+
 .new-entry {
   &__headline {
     color: red;
+  }
+
+  &__item {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f7f7f7;
+    }
   }
 
   &__button {
