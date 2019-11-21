@@ -9,6 +9,16 @@
         {{ entry.data.time }}
       </li>
     </ul>
+    <button @click="exportDropdownIsActive = !exportDropdownIsActive">Export</button>
+    <div v-show="exportDropdownIsActive" class="current-booking__export-dropdown">
+      <button class="current-booking__export-button" disabled>JSON</button>
+      <button class="current-booking__export-button" disabled>E-Mail</button>
+      <button @click="exportToCsv" class="current-booking__export-button">CSV</button>
+    </div>
+    <section v-if="exportedData" class="current-booking__result">
+      <textarea v-model="exportedData" ref="exportTextarea" class="current-booking__result-textarea" />
+      <button class="current-booking__button" @click="copyExportedData">Copy</button>
+    </section>
   </div>
 </template>
 
@@ -23,32 +33,46 @@ export default {
       currentBooking: "booking/current",
     })
   },
+  data: () => ({
+    exportDropdownIsActive: false,
+    exportedData: undefined
+  }),
   methods: {
-    transform() {
-      const fieldNames = this.fields.filter(field => field.export !== false).map(field => field.name);
-      const options = { fields: fieldNames, quote: "", delimiter: "|" };
+    exportToCsv() {
+      // dynamic construction
+      // const fieldNames = Object.keys(this.currentBooking[0].data);
+      // manual construction to ensure csv order
+      const fieldNames = ["userId", "projectId", "taskId", "date", "description", "time"];
+      const options = { fields: fieldNames, quote: "", delimiter: "|", header: false };
 
-      // todo refactor
-      this.entry["resId"] = { exportValue: this.userId };
-      const exportEntry = {};
-
-      for (const fieldName of fieldNames) {
-        exportEntry[fieldName] = this.entry[fieldName].exportValue;
-      }
+      const exportEntries = this.currentBooking.map(entry => entry.data);
 
       try {
         const parser = new Parser(options);
-        const result = parser.parse(exportEntry);
-        console.log(result);
-        return result;
+        const csv = parser.parse(exportEntries);
+        
+        this.exportedData = csv
       } catch (error) {
         console.error(error);
       }
     },
+    copyExportedData() {
+      this.$refs.exportTextarea.select();
+      document.execCommand("copy");
+    }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+.current-booking {
+  &__result {
 
+  }
+
+  &__result-textarea {
+    display: block;
+    width: 100%;
+  }
+}
 </style>

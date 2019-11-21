@@ -103,7 +103,6 @@ export default {
     }
   },
   data: () => ({
-    // fields: ["resId", "project", "taskId", "date", "description", "time"],
     activeSearch: null,
     entry: {},
     description: "",
