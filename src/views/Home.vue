@@ -7,6 +7,9 @@
       <router-link tag="button" to="/new" class="home__item">
         Neue Buchung
       </router-link>
+      <router-link tag="button" to="/current-booking" class="home__item">
+        Aktuelle Buchung
+      </router-link>
       <router-link tag="button" to="/settings" class="home__item">
         Einstellungen
       </router-link>

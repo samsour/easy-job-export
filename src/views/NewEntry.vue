@@ -39,12 +39,10 @@
     </div>
 
     <button @click="saveEntry" class="new-entry__button">Speichern</button>
-    <button @click="transform(entry)" class="new-entry__button">Export to csv</button>
   </div>
 </template>
 
 <script>
-import { Parser } from "json2csv";
 import { mapGetters } from 'vuex'
 import Search from "@/components/Search";
 import VueTimepicker from 'vue2-timepicker/dist/VueTimepicker.umd.min.js';
@@ -79,7 +77,7 @@ export default {
     fields() {
       return [
         {
-          name: "resId",
+          name: "userId",
           data: this.userId,
           visible: false
         },
@@ -116,26 +114,8 @@ export default {
     }
   }),
   methods: {
-    transform() {
-      const fieldNames = this.fields.filter(field => field.export !== false).map(field => field.name);
-      const options = { fields: fieldNames, quote: "", delimiter: "|" };
-
-      // todo refactor
-      this.entry["resId"] = { exportValue: this.userId };
-      const exportEntry = {};
-
-      for (const fieldName of fieldNames) {
-        exportEntry[fieldName] = this.entry[fieldName].exportValue;
-      }
-
-      try {
-        const parser = new Parser(options);
-        const result = parser.parse(exportEntry);
-        console.log(result);
-        return result;
-      } catch (error) {
-        console.error(error);
-      }
+    generateId() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     },
     setSearchState({ field, state }) {
       if (this.activeSearch != field || this.activeSearch == field && state == true) {
@@ -152,7 +132,32 @@ export default {
       }
     },
     saveEntry() {
-      console.log("SAVING");
+      // check if properties are set - description may be empty
+      if(
+        this.userId
+        && Object.keys(this.entry).length > 0
+        && this.entry.project && this.entry.project.exportValue
+        && this.entry.task && this.entry.task.exportValue
+        && this.date
+        && this.time.H > 0 || this.time.m > 0
+      ) {
+        const entry = {
+          created: Date.now(),
+          id: this.generateId(),
+          data: {
+            userId: this.userId,
+            projectId: this.entry.project.exportValue,
+            taskId: this.entry.task.exportValue,
+            date: this.date,
+            time: parseInt(this.time.H) + parseFloat(this.time.m / 60),
+            description: this.description
+          }
+        }
+        this.$store.dispatch("booking/addEntry", entry);
+        this.$router.push("/current-booking");
+      } else {
+        console.error("Missing entries");
+      }
     }
   },
   mounted() {

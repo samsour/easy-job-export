@@ -5,6 +5,7 @@ import VuexPersist from "vuex-persist";
 import UserModule from "./modules/User";
 import CustomerModule from "./modules/Customer";
 import ProjectModule from "./modules/Project";
+import BookingModule from "./modules/Booking";
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ const vuexPersist = new VuexPersist({
     user: state.user,
     customer: state.customer,
     project: state.project,
+    booking: state.booking,
   })
 });
 
@@ -24,6 +26,7 @@ export default new Vuex.Store({
     user: UserModule,
     customer: CustomerModule,
     project: ProjectModule,
+    booking: BookingModule
   },
   state: {
     menuActive: false,

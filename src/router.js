@@ -44,6 +44,10 @@ const router = new Router({
     {
       path: "/customer/:id",
       component: () => import("./views/Customer")
+    },
+    {
+      path: "/current-booking",
+      component: () => import("./views/CurrentBooking")
     }
   ]
 });
