@@ -9,9 +9,21 @@
       <h2 class="customer__name">{{ customer.name }}</h2>
     </div>
 
-    <ul v-if="projects.length > 0" class="customer__task-list">
-      <li v-for="project in projects" :key="project.id" class="customer-task-item">
-        <span>{{ project.name }} </span><span>({{ project.exportValue }})</span>
+    <ul v-if="projects.length > 0" class="customer__project-list">
+      <li v-for="project in projects" :key="project.id" class="customer__project">
+          <div>{{ project.name }} ({{ project.exportValue }})</div>
+          <ul v-if="project.tasks.length > 0" class="customer__project-tasks">
+            <li v-for="task in project.tasks" :key="task.id">
+              {{ task.name }} ({{ task.exportValue }}) <button @click="removeTask(project.id, task.id)">remove</button>
+            </li>
+          </ul>
+          <button v-if="newTask == null" @click="newTask = {}">Neuer Task</button>
+          <div v-if="newTask !== null" class="">
+            <button @click="newTask = null">Abbrechen</button>
+            <input v-model="newTask.name" @keydown.enter="addNewTask(project.id)" />
+            <input v-model="newTask.exportValue" @keydown.enter="addNewTask(project.id)" />
+            <button @click="addNewTask(project.id)">Speichern</button>
+          </div>
       </li>
     </ul>
     <span v-else>Keine Projekte</span>
@@ -44,7 +56,8 @@ export default {
   },
   data() {
     return {
-      newProject: null
+      newProject: null,
+      newTask: null
     }
   },
   methods: {
@@ -72,6 +85,22 @@ export default {
         tasks: []
       })
       this.newProject = null;
+    },
+    addNewTask(projectId) {
+      if (this.newTask && this.newTask.name && this.newTask.exportValue) {
+        this.$store.dispatch("project/addTask", {
+          id: this.generateId(),
+          projectId: projectId,
+          name: this.newTask.name,
+          exportValue: this.newTask.exportValue
+        })
+        this.newTask = null;
+      } else {
+        console.error("Missing name or export value");
+      }
+    },
+    removeTask(projectId, taskId) {
+      this.$store.dispatch("project/removeTask", { projectId, taskId});
     }
   }
 };
@@ -120,6 +149,14 @@ export default {
 
   &__image-upload {
     display: none;
+  }
+
+  &__project {
+    margin-bottom: 20px;
+  }
+
+  &__project-tasks {
+    margin-left: 20px;
   }
 }
 </style>

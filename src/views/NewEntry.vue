@@ -21,7 +21,6 @@
     </div>
 
     <div class="new-entry__item">
-      <label for="time">Zeit</label>
       <vue-timepicker
         v-model="time"
         name="time"

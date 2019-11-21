@@ -1,85 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    projects: [
-      {
-        id: "09n34f94",
-        customer: "f0923f0",
-        exportValue: "ID-undso-2019",
-        name: "Metal Homepage",
-        tasks: [
-          {
-            id: "7c32hd9d8",
-            exportValue: 76177,
-            name: "Designer"
-          },
-          {
-            id: "fn38qwdvv9034",
-            exportValue: 12345,
-            name: "Entwickler"
-          }
-        ]
-      },
-      {
-        id: "5462cgtvba23",
-        customer: "d09r3f0",
-        exportValue: "PROJ-2",
-        name: "echt langes Projekt",
-        tasks: [
-          {
-            id: "732h5eqtf9d8",
-            exportValue: 11112,
-            name: "echt langer Task mit ganz vielen Buchstaben"
-          },
-          {
-            id: "ffffewfvdf",
-            exportValue: 25252,
-            name: "kurzer Task"
-          },
-          {
-            id: "1d1d1f1f1gg",
-            exportValue: 123111,
-            name: "Ganz normaler Task"
-          }
-        ]
-      },
-      {
-        id: "jfowntjssi4",
-        customer: "jjwer31r",
-        exportValue: "PROJECT-2019",
-        name: "Ausbildung",
-        tasks: [
-          {
-            id: "73btbfsfe8",
-            exportValue: 73452,
-            name: "Berufsschule"
-          },
-          {
-            id: "45gfdewf",
-            exportValue: 90707,
-            name: "Berichtsheft"
-          }
-        ]
-      },
-      {
-        id: "jfowntjsfesi4",
-        customer: "jjwer31r",
-        exportValue: "PROJECT-2011",
-        name: "Relaunch Bad Website",
-        tasks: [
-          {
-            id: "73btgstzjtfe8",
-            exportValue: 73452,
-            name: "Senior Developer"
-          },
-          {
-            id: "45gfdeashwf",
-            exportValue: 90707,
-            name: "Junior Developer"
-          }
-        ]
-      }
-    ]
+    projects: []
   },
   getters: {
     projects: state => state.projects,
@@ -97,18 +19,17 @@ export default {
     ADD_PROJECT(state, name) {
       state.projects.push(name);
     },
-    ADD_TASK(state, task) {
-      const index = state.projects.findIndex((project => project.id == task.projectId));
-      state.projects[index].tasks.push({ id: task.taskId, name: task.name });
+    ADD_TASK(state, { projectId, task}) {
+      const projectIndex = state.projects.findIndex((project => project.id == projectId));
+      state.projects[projectIndex].tasks.push(task);
     },
     SET_PROJECT(state, newProject) {
-      const index = state.projects.findIndex((project => project.projectId == newProject.projectId));
-      Object.assign(state.projects[index]);
+      const projectIndex = state.projects.findIndex((project => project.projectId == newProject.projectId));
+      Object.assign(state.projects[projectIndex]);
     },
-    SET_TASK(state, { projectId, newTask }) {
+    REMOVE_TASK(state, { projectId, taskId }) {
       const projectIndex = state.projects.findIndex((project => project.id == projectId));
-      const taskIndex = state.projects[projectIndex].tasks.findIndex((task => task.id == newTask.id));
-      Object.assign(state.projects[projectIndex].tasks[taskIndex], task);
+      state.projects[projectIndex].tasks = state.projects[projectIndex].tasks.filter(task => task.id !== taskId);
     }
   },
   actions: {
@@ -116,7 +37,12 @@ export default {
       commit("ADD_PROJECT", project);
     },
     addTask({ commit, state }, task) {
-      commit("ADD_TASK", task);
+      // copy projectId from task into variable projectId and then copy rest of properties into variable taskWithoutProjectId
+      const { projectId, ...taskWithoutProjectId } = task;
+      commit("ADD_TASK", { projectId: task.projectId, task: taskWithoutProjectId });
     },
+    removeTask({ commit, state }, data) {
+      commit("REMOVE_TASK", data);
+    }
   }
 };
