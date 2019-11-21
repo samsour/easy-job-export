@@ -13,7 +13,11 @@
     />
     
     <div class="new-entry__item">
-      <input v-model="date" type="date" />
+      <date-pick
+        v-model="date"
+        :format="'MM/DD/YYYY'"
+        :displayFormat="'DD.MM.YYYY'"
+      ></date-pick>
     </div>
 
     <div class="new-entry__item">
@@ -21,7 +25,7 @@
       <vue-timepicker
         v-model="time"
         name="time"
-        format="H:m"
+        format="H.m"
         :minute-interval="15"
         close-on-complete
         placeholder="Zeit"
@@ -45,12 +49,14 @@ import { Parser } from "json2csv";
 import { mapGetters } from 'vuex'
 import Search from "@/components/Search";
 import VueTimepicker from 'vue2-timepicker/dist/VueTimepicker.umd.min.js';
+import DatePick from 'vue-date-pick';
 
 export default {
   name: "new",
   components: {
     Search,
-    VueTimepicker
+    VueTimepicker,
+    DatePick
   },
   computed: {
     ...mapGetters({
@@ -99,19 +105,17 @@ export default {
       return this.fields.filter(field => field.visible !== false);
     }
   },
-  data() {
-    return {
-      // fields: ["resId", "project", "taskId", "date", "description", "time"],
-      activeSearch: null,
-      entry: {},
-      description: "",
-      date: Date.now(),
-      time: {
-        H: "",
-        m: ""
-      }
-    };
-  },
+  data: () => ({
+    // fields: ["resId", "project", "taskId", "date", "description", "time"],
+    activeSearch: null,
+    entry: {},
+    description: "",
+    date: "",
+    time: {
+      H: "",
+      m: ""
+    }
+  }),
   methods: {
     transform() {
       const fieldNames = this.fields.filter(field => field.export !== false).map(field => field.name);
@@ -151,12 +155,17 @@ export default {
     saveEntry() {
       console.log("SAVING");
     }
+  },
+  mounted() {
+    const date = new Date();
+    this.date = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import '~vue2-timepicker/dist/VueTimepicker.css';
+@import '~vue-date-pick/dist/vueDatePick.css';
 
 .new-entry {
   &__headline {
