@@ -2,11 +2,16 @@
   <div class="current-booking">
     <ul>
       <li v-for="entry in currentBooking" :key="entry.id">
-        {{ entry.data.projectId }}
-        {{ entry.data.taskId }}
-        {{ entry.data.description }}
-        {{ entry.data.date }}
-        {{ entry.data.time }}
+        <div v-if="Object.keys(entry).length > 0" class="">
+          {{ entry.data.projectId }}
+          {{ entry.data.taskId }}
+          {{ entry.data.description }}
+          {{ entry.data.date }}
+          {{ entry.data.time }}
+          <button @click="duplicateEntry(entry)">duplicate</button>
+          <button @click="removeEntry(entry.id)">remove</button>
+        </div>
+        <span v-else class="message">some empty object in the store</span>
       </li>
     </ul>
     <button @click="exportDropdownIsActive = !exportDropdownIsActive">Export</button>
@@ -38,6 +43,34 @@ export default {
     exportedData: undefined
   }),
   methods: {
+    generateId() {
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    },
+    removeEntry(id) {
+      this.$store.dispatch("booking/removeEntry", id);
+    },
+    duplicateEntry(entry) {
+      console.log("duplicate", entry);
+      // get old date
+      const date = new Date(entry.data.date);
+      // increment old date
+      date.setDate(date.getDate() + 1)
+
+      // build new date string
+      const monthString = date.getMonth()+1 < 10 ? `0${date.getMonth()+1}` : date.getMonth() + 1;
+      const dayString = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      const convertedDate =`${monthString}/${dayString}/${date.getFullYear()}`;
+
+      const newEntry = {
+        created: Date.now(),
+          id: this.generateId(),
+          data: {
+            ...entry.data,
+            date: convertedDate
+          }
+      }
+      this.$store.dispatch("booking/addEntry", newEntry);
+    },
     exportToCsv() {
       // dynamic construction
       // const fieldNames = Object.keys(this.currentBooking[0].data);
