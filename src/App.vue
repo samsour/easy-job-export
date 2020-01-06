@@ -30,16 +30,4 @@ export default {
   color: #272727;
   min-height: 100vh;
 }
-
-@keyframes background-animation {
-    0% {
-        background-position: 0%
-    }
-    50% {
-        background-position: 100%;
-    }
-    100% {
-        background-position: 0%;
-    }
-}
 </style>

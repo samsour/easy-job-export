@@ -1,8 +1,10 @@
 <template>
     <nav class="navigation-bar">
-        <a v-if="!$route.path.includes('home')">
+        <button v-if="!$route.path.includes('home')" class="navigation-bar__back-button">
             <img @click="$router.go(-1)" class="navigation-bar__arrow" src="@/assets/icons/arrow.svg">
-        </a>
+        </button>
+
+        <h1 class="navigation-bar__headline">{{ $route.name }}</h1>
     </nav>
 </template>
 
@@ -14,10 +16,19 @@ export default {
 
 <style lang="scss">
 .navigation-bar {
-    padding: 30px;
+    padding: 30px 30px 30px 10px;
+    display: flex;
+    align-items: center;
+
+    &__back-button {
+        padding: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+        border: 0;
+    }
 
     &__arrow {
-        width: 40px;
+        width: 20px;
         transform: rotate(180deg);
     }
 }
