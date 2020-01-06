@@ -13,9 +13,6 @@
       <router-link tag="button" to="/settings" class="home__item">
         Einstellungen
       </router-link>
-      <router-link tag="button" to="/manage" class="home__item">
-        Daten bearbeiten
-      </router-link>
     </div>
   </div>
 </template>
@@ -37,7 +34,7 @@ export default {
 <style lang="scss">
 .home {
   &__header {
-    padding: 0 20px;
+    padding: 0 30px;
     font-size: 18px;
     max-width: 768px;
     margin: 0 auto 30px;

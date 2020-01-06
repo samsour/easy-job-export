@@ -65,6 +65,7 @@ export default {
         color: #282828;
         font-size: 18px;
         border: 0;
+        font-weight: bold;
     }
 }
 </style>

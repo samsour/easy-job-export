@@ -43,10 +43,12 @@ const router = new Router({
     },
     {
       path: "/customer/:id",
+      name: "Customer",
       component: () => import("./views/Customer")
     },
     {
       path: "/current-booking",
+      name: "Current booking",
       component: () => import("./views/CurrentBooking")
     }
   ]

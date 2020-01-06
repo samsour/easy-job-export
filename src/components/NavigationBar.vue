@@ -19,6 +19,7 @@ export default {
     padding: 30px 30px 30px 10px;
     display: flex;
     align-items: center;
+    height: 120px;
 
     &__back-button {
         padding: 20px;
@@ -30,6 +31,12 @@ export default {
     &__arrow {
         width: 20px;
         transform: rotate(180deg);
+    }
+
+    &__headline {
+        &:first-child {
+            padding-left: 20px;
+        }
     }
 }
 </style>

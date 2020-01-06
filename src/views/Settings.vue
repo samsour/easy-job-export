@@ -1,11 +1,8 @@
 <template>
   <div class="settings">
-    <section class="settings__options">
-
     <settings-option :label="'Name'" v-model="name" :overlayText="'Only for display purposes, he username won\'t be exported.'" />
-    <settings-option :label="'Export value'" v-model="userId" :overlayText="'Resource/User ID, the unique identifier in the export system.'" />
-    
-    </section>
+    <settings-option :label="'Export value'" v-model="userId" :overlayText="'Resource/User ID, the unique identifier in the import system.'" />
+    <router-link to="/manage" class="settings__link">Manage customer data</router-link>
   </div>
 </template>
 
@@ -54,34 +51,14 @@ export default {
     margin: 0 auto;
   }
 
-  &__label {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__input {
+  &__link {
+    display: inline-block;
+    margin-left: 30px;
+    color: #282828;
     font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
     padding: 10px;
-    border: 0;
-    border-bottom: 3px solid #000;
-    color: #272727;
-    margin-bottom: 5px;
-  }
-
-  &__button {
-    border: 0;
-    color: #272727;
-    background: transparent;
-    padding: 20px;
-    font-size: 18px;
-    cursor: pointer;
-    display: block;
-    margin: auto;
-
-    &:hover {
-      background: #272727;
-      color: #fff;
-    }
   }
 }
 </style>

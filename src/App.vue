@@ -30,4 +30,8 @@ export default {
   color: #272727;
   min-height: 100vh;
 }
+
+input {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
 </style>
