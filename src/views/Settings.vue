@@ -1,16 +1,22 @@
 <template>
   <div class="settings">
-    <h1 class="settings__headline">Settings</h1>
     <section class="settings__options">
-      <input type="text" v-model="name" placeholder="Name" class="settings__input" />
-      <input type="text" v-model="userId" placeholder="Export value (User ID)" class="settings__input" />
+
+    <settings-option :label="'Name'" v-model="name" :overlayText="'Only for display purposes, he username won\'t be exported.'" />
+    <settings-option :label="'Export value'" v-model="userId" :overlayText="'Resource/User ID, the unique identifier in the export system.'" />
+    
     </section>
   </div>
 </template>
 
 <script>
+import SettingsOption from '../components/SettingsOption';
+
 export default {
   name: "settings",
+  components: {
+    SettingsOption
+  },
   computed: {
     name: {
       get() {
@@ -34,6 +40,8 @@ export default {
 
 <style lang="scss">
 .settings {
+  padding: 0 30px;
+
   &__headline {
     max-width: 768px;
     margin: 0 auto 30px;
@@ -46,10 +54,16 @@ export default {
     margin: 0 auto;
   }
 
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
   &__input {
     font-size: 18px;
     padding: 10px;
     border: 0;
+    border-bottom: 3px solid #000;
     color: #272727;
     margin-bottom: 5px;
   }
