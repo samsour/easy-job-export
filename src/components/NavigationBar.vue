@@ -1,7 +1,7 @@
 <template>
     <nav class="navigation-bar">
-        <button v-if="!$route.path.includes('home')" class="navigation-bar__back-button">
-            <img @click="$router.go(-1)" class="navigation-bar__arrow" src="@/assets/icons/arrow.svg">
+        <button v-if="!$route.path.includes('home')" @click="$router.go(-1)" class="navigation-bar__back-button">
+            <img class="navigation-bar__arrow" src="@/assets/icons/arrow.svg">
         </button>
 
         <h1 class="navigation-bar__headline">{{ $route.name }}</h1>
