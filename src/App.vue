@@ -1,12 +1,18 @@
 <template>
   <div id="app">
+    <navigation-bar />
     <router-view />
   </div>
 </template>
 
 <script>
+import NavigationBar from './components/NavigationBar';
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    NavigationBar
+  }
 }
 </script>
 
@@ -22,12 +28,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #272727;
-  padding-top: 60px;
   min-height: 100vh;
-  background: linear-gradient(to bottom right, rgba(rgb(133, 167, 220), 0.38), rgba(#E5E5E5, 0.38));
-  background-size: 200%;
-  background-position: 100%;
-  animation: background-animation infinite 15s;
 }
 
 @keyframes background-animation {
