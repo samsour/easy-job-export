@@ -1,6 +1,7 @@
 <template>
   <label class="search-results">
     <ul v-if="filterData && filteredArray.length > 0" class="search-results__list">
+      
       <li v-for="(item, index) in filteredArray" :key="index" @click="$emit('itemSelect', item)" class="search-results__list-item">
         <figure class="search-results__result">
           <div v-if="item.image" class="search-results__image-wrapper">
@@ -18,13 +19,17 @@
 
 <script>
 export default {
-  name: "search-label",
+  name: "search-results",
   props: {
+    // Übergabe Parameter
+    // Array mit Einträgen, welche gefiltert werden
     filterData: Array,
+    // String mit Text, mit dem gefiltert wird
     searchText: String
   },
   computed: {
     filteredArray() {
+      // gibt einen Array zurück, der mit dem Suchtext nach Namen gefilterte Einträge enthält
       return this.filterData.filter(item => {
         return item.name.toLowerCase().includes(this.searchText.toLowerCase())
       })
@@ -32,7 +37,7 @@ export default {
   },
   data() {
       return {
-          noResultMessage: "Keine Suchergebnisse"
+          noResultMessage: "Neuen Kunden hinzufügen"
       }
   }
 };
